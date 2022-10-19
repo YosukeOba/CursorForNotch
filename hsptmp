@@ -4,7 +4,7 @@
 #include "user32.as"
 #include "hspmath.as"
 
-cursorMode = 1
+cursorMode = 3
 dim cursorSize,2
 cursorSize = 12,20
 
@@ -150,8 +150,10 @@ lastTime=timeGetTime()
 	
 	gosub *drawTarget
 	gosub *drawStart
+	
 	gosub *drawCursor
 	gosub *drawNotch
+
 
 	color 0,0,0
 	pos 0,0
@@ -282,7 +284,7 @@ lastTime=timeGetTime()
 	return
 
 *drawNotch
-	color 0,0,0
+	color 255,255,255
 	
 	if(D == 0){
 		notch(0) = target(0) - notchWidth - I
@@ -390,6 +392,13 @@ lastTime=timeGetTime()
 	
 	pdummyMouseX = dummyMouseX
 	pdummyMouseY = dummyMouseY
+
+	if(cursorMode == 3){
+		if(notch(0) <= dummyMouseX && dummyMouseX <= notch(0)+notchWidth && notch(1) <= dummyMouseY && dummyMouseY <= notch(1)+notchHeight){
+			color 255,0,0
+			circle dummyMouseX-5,notchHeight+(notchHeight-dummyMouseY)-5,dummyMouseX+5,notchHeight+(notchHeight-dummyMouseY)+5
+		}
+	}
 
 	gmode 4,cursorSize(0),cursorSize(1),256
 	color 255,0,0
