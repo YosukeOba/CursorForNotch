@@ -4,22 +4,37 @@
 #include "user32.as"
 #include "hspmath.as"
 
-cursorMode = 3
+dim cursorModes,4
+cursorModes = 0,1,2,3
+
+cursorMode = cursorModes(0)
+
 dim cursorSize,2
 cursorSize = 12,20
+
+cursorBuffer = 0
+
+cursorModeCounter = 0
+SCounter = 0
+
+kurikaesi = 22
+
+rest = 0
+practice = 0
 
 buffer 1
 picload "マウス画像.png",1
 buffer 2
 pos 0,0
-if(cursorMode == 1){
-	cursorSize(0) = 20
-	cursorSize(1) = 32
-} else: if(cursorMode == 2){
-	cursorSize(0) = 24
-	cursorSize(1) = 40
-}
-gzoom cursorSize(0),cursorSize(1),1,0,0,106,172,0
+gzoom 12,20,1,0,0,106,172,0
+
+buffer 3
+pos 0,0
+gzoom 20,32,1,0,0,106,172,0
+
+buffer 4
+pos 0,0
+gzoom 24,40,1,0,0,106,172,0
 
 screen 0,ginfo(20),ginfo(21),256,0,0
 
@@ -74,13 +89,13 @@ As = 20*temp2
 dim Is,3
 Is = 0.0,1.2*temp2,10000.0
 
-dim Ss,1
-Ss = 0
+dim Ss,2
+Ss = 0,1
 
 dim Ds,1
 Ds = 0
 
-countBlock = cursorMode*40 + Ss(0)*20 + 20
+countBlock = cursorMode*kurikaesi*2 + Ss(0)*kurikaesi + kurikaesi
 
 dim tasks,length(Ws)*length(As)*length(Is)*length(Ss)*length(Ds)
 gosub *taskShuffle
@@ -105,7 +120,7 @@ LoadCursorFromFile refstr
 SetClassLong hwnd, -12, stat
 
 taskCounter = 0
-blockCounter = cursorMode*40 + Ss(0)*20
+blockCounter = cursorMode*kurikaesi*2 + Ss(0)*kurikaesi
 
 A = 0
 W = 0
@@ -138,12 +153,30 @@ lastTime=timeGetTime()
 	}
 	redraw 0
 	color 175,175,175:boxf
+
+	onclick gosub *click
+
+	if(rest == 1){
+		pos ginfo(20)/2,ginfo(21)/2
+		if(practice == 0){
+			mes "REST"
+		} else {
+			mes "練習終わり"
+		}
+		kkk = 0
+		getkey kkk,13
+		if(kkk == 1){
+			rest = 0
+			practice = 1-practice
+		}
+		redraw 1
+		await 1
+		goto *main
+	}
 	
 	if(isStart == -1){
 		gosub *taskDataSave
 	}
-
-	onclick gosub *click
 
 	gosub *term
 
@@ -179,8 +212,13 @@ lastTime=timeGetTime()
 	//pos 0,180
 	//mes "I = "+I
 	//Is(0)+","+Is(1)+","+Is(2)+","+Is(3)+","+Is(4)
-	//pos 0,210
-	//mes "S = "+S
+	pos 0,210
+	if(S == 0){
+		Ssetumei = "画面上端に沿わせて操作"
+	} else: if(S == 1){
+		Ssetumei = "ノッチを回避して操作"
+	}
+	mes "S = "+Ssetumei
 	//pos 0,240
 	//mes "D = "+D
 	
@@ -224,8 +262,10 @@ lastTime=timeGetTime()
 	A = As(e \ length(As))
 	W = Ws((e/length(As)) \ length(Ws))
 	I = Is((e/length(As)/length(Ws)) \ length(Is))
-	S = Ss((e/length(As)/length(Ws)/length(Is)) \ length(Ss))
-	D = Ds( (e/length(As)/length(Ws)/length(Is)/length(Ss)) \ length(Ds))
+	S = S(SCounter)
+	cursorMode = cursorModes(cursorModeCounter)
+	//S = Ss((e/length(As)/length(Ws)/length(Is)) \ length(Ss))
+	//D = Ds( (e/length(As)/length(Ws)/length(Is)/length(Ss)) \ length(Ds))
 
 	if(D == 0){
 		startTarget(0) = ginfo(20)/2 - A/2 - W/2
@@ -272,6 +312,15 @@ lastTime=timeGetTime()
 	taskCounter++
 	if (length(tasks) <= taskCounter){
 		blockCounter++
+		if(blockCounter == 2){
+			rest = 1
+			practice = 1
+		}
+		if(blockCounter \ kurikaesi == 0){
+			Scounter = 1-Scounter
+			cursorModeCounter = cursorModeCounter + 1
+			rest = 1
+		}
 		taskCounter=0
 		gosub *taskShuffle
 	}
@@ -400,9 +449,20 @@ lastTime=timeGetTime()
 		}
 	}
 
+	if(cursorMode == 0 || cursorMode == 3){
+		cursorSize = 12,20
+		cursorBuffer = 2
+	} else: if(cursorMode == 1){
+		cursorSize = 20,32
+		cursorBuffer = 3
+	} else: if(cursorMode == 2){
+		cursorSize = 24,40
+		cursorBuffer = 4
+	}
+
 	gmode 4,cursorSize(0),cursorSize(1),256
 	color 255,0,0
-	pos dummyMouseX,dummyMouseY:gcopy 2,0,0,cursorSize(0),cursorSize(1)
+	pos dummyMouseX,dummyMouseY:gcopy cursorBuffer,0,0,cursorSize(0),cursorSize(1)
 
 	mouse ginfo(20)/2,ginfo(21)/2
 	mouse -1
