@@ -154,8 +154,6 @@ lastTime=timeGetTime()
 	redraw 0
 	color 175,175,175:boxf
 
-	onclick gosub *click
-
 	if(rest == 1){
 		pos ginfo(20)/2,ginfo(21)/2
 		color 0,0,0
@@ -178,6 +176,8 @@ lastTime=timeGetTime()
 	if(isStart == -1){
 		gosub *taskDataSave
 	}
+
+	onclick gosub *click
 
 	gosub *term
 
