@@ -5,7 +5,7 @@
 #include "hspmath.as"
 
 dim cursorModes,4
-cursorModes = 0,1,2,3
+cursorModes = 2,3,0,1
 
 cursorMode = cursorModes(0)
 
@@ -17,13 +17,13 @@ cursorBuffer = 0
 cursorModeCounter = 0
 Scounter = 0
 
-kurikaesi = 3
+kurikaesi = 22
 
 rest = 0
 practice = 0
 
 buffer 1
-picload "マウス画像.png",1
+picload "マウス画像2.png",1
 buffer 2
 pos 0,0
 gzoom 12,20,1,0,0,106,172,0
@@ -46,7 +46,7 @@ mci "open \""+failureMusicFile+"\" alias failure"
 currentDir = dir_cur
 
 
-participant = 103
+participant = 105
 displaySize = 17.3
 
 
@@ -64,9 +64,9 @@ temp3 = (ginfo(21) / display(1))
 
 notchWidth = 3.7 * temp2
 notchHeight = 0.6 * temp3
-/*
-dim Ws,2
-Ws = 0.6*temp2, 2.3*temp2
+
+dim Ws,1
+Ws = 0.6*temp2
 
 dim As,2
 As = 10*temp2, 20*temp2
@@ -74,12 +74,13 @@ As = 10*temp2, 20*temp2
 dim Is,3
 Is = 0.0,1.2*temp2,10000.0
 
-dim Ss,1
-Ss = 2
+dim Ss,2
+Ss = 1,0
 
 dim Ds,1
-Ds = 0*/
+Ds = 0
 
+/*
 dim Ws,1
 Ws = 0.6*temp2
 
@@ -94,10 +95,11 @@ Ss = 0,1
 
 dim Ds,1
 Ds = 0
+*/
 
 countBlock = length(cursorModes)*kurikaesi*2
 
-dim tasks,length(Ws)*length(As)*length(Is)*length(Ss)*length(Ds)
+dim tasks,length(Ws)*length(As)*length(Is)
 gosub *taskShuffle
 
 ;screenWidth = ginfo(12)
@@ -336,7 +338,7 @@ lastTime=timeGetTime()
 	return
 
 *drawNotch
-	color 255,255,255
+	color 0,0,0
 	
 	if(D == 0){
 		notch(0) = target(0) - notchWidth - I
