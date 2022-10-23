@@ -4,8 +4,8 @@
 #include "user32.as"
 #include "hspmath.as"
 
-dim cursorModes,2
-cursorModes = 5,4
+dim cursorModes,3
+cursorModes = 0,2,3
 
 cursorMode = cursorModes(0)
 
@@ -46,7 +46,7 @@ mci "open \""+failureMusicFile+"\" alias failure"
 currentDir = dir_cur
 
 
-participant = 108
+participant = 109
 displaySize = 23.8
 
 
