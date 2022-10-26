@@ -17,7 +17,7 @@ temp3 = (ginfo(21) / display(1))
 
 
 dim cursorModes,3
-cursorModes = 5,0,5
+cursorModes = 0,2,5
 
 cursorMode = cursorModes(0)
 
@@ -29,7 +29,7 @@ cursorBuffer = 0
 cursorModeCounter = 0
 Scounter = 0
 
-kurikaesi = 22
+kurikaesi = 24
 
 rest = 0
 practice = 0
@@ -314,7 +314,7 @@ lastTime=timeGetTime()
 	taskCounter++
 	if (length(tasks) <= taskCounter){
 		blockCounter++
-		if(blockCounter \ kurikaesi == 2){
+		if(blockCounter \ kurikaesi == 4){
 			rest = 1
 			practice = 1
 		}
