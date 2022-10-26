@@ -4,13 +4,25 @@
 #include "user32.as"
 #include "hspmath.as"
 
+participant = 1000
+displaySize = 24.5
+
+temp = sqrt(16*16+9*9)
+
+dim display,2
+display = displaySize*2.54/temp*16, displaySize*2.54/temp*9
+
+temp2 = (ginfo(20) / display(0))
+temp3 = (ginfo(21) / display(1))
+
+
 dim cursorModes,3
-cursorModes = 2,0,3
+cursorModes = 0,2,5
 
 cursorMode = cursorModes(0)
 
 dim cursorSize,2
-cursorSize = 10,16
+cursorSize = 0.25*temp2,0.4*temp3
 
 cursorBuffer = 0
 
@@ -26,7 +38,7 @@ buffer 1
 picload "ƒ}ƒEƒX‰æ‘œ2.png",1
 buffer 2
 pos 0,0
-gzoom 10,16,1,0,0,106,172,0
+gzoom 0.25*temp2,0.4*temp3,1,0,0,106,172,0
 
 buffer 3
 pos 0,0
@@ -34,7 +46,7 @@ gzoom 20,32,1,0,0,106,172,0
 
 buffer 4
 pos 0,0
-gzoom 20,32,1,0,0,106,172,0
+gzoom 0.5*temp2,0.8*temp3,1,0,0,106,172,0
 
 screen 0,ginfo(20),ginfo(21),256,0,0
 
@@ -46,21 +58,8 @@ mci "open \""+failureMusicFile+"\" alias failure"
 currentDir = dir_cur
 
 
-participant = 111
-displaySize = 23.8
-
-
-
 isStart = 0
 startTime = 0
-
-temp = sqrt(16*16+9*9)
-
-dim display,2
-display = displaySize*2.54/temp*16, displaySize*2.54/temp*9
-
-temp2 = (ginfo(20) / display(0))
-temp3 = (ginfo(21) / display(1))
 
 notchWidth = 3.7 * temp2
 notchHeight = 0.6 * temp3
@@ -366,7 +365,8 @@ lastTime=timeGetTime()
 		dummyMouseY = ginfo(21)-1
 	}
 
-	if(cursorMode == 5 && isStart == -1){
+	//if(cursorMode == 5 && isStart == -1){
+	if(cursorMode == 5){
 
 	if(dummyMouseX != pdummyMouseX && dummyMouseY != pdummyMouseY){
 		color 0,0,0
@@ -376,11 +376,13 @@ lastTime=timeGetTime()
 		bbb = aaa * -pdummyMouseX + pdummyMouseY
 
 		if(aaa * notch(0) + bbb <= notchHeight && pdummyMouseX <= notch(0) && notch(0) <= dummyMouseX){
-			dummyMouseX = notch(0) + notchWidth+1
+			ttt = dummyMouseX-notch(0)
+			dummyMouseX = notch(0) + notchWidth+ttt
 		}
 
 		if(aaa * (notch(0)+notchWidth) + bbb <= notchHeight && dummyMouseX <= notch(0) + notchWidth && notch(0) + notchWidth <= pdummyMouseX){
-			dummyMouseX = notch(0) - 1
+			ttt = notch(0) + notchWidth - dummyMouseX
+			dummyMouseX = notch(0) - ttt
 		}
 
 		if(notch(0) <= (notchHeight - bbb)/aaa && (notchHeight - bbb)/aaa <= notch(0) + notchWidth && notchHeight <= pdummyMouseY && dummyMouseY <= notchHeight){
@@ -414,9 +416,11 @@ lastTime=timeGetTime()
 		}
 	} else: if(dummyMouseY == pdummyMouseY && dummyMouseX != pdummyMouseX){
 		if(pdummyMouseX <= notch(0) && notch(0) <= dummyMouseX && dummyMouseY <= notchHeight){
-			dummyMouseX = notch(0) + notchWidth + 1
+			ttt = dummyMouseX-notch(0)
+			dummyMouseX = notch(0) + notchWidth + ttt
 		} else: if(dummyMouseX <= notch(0) + notchWidth && notch(0) + notchWidth <= pdummyMouseX && dummyMouseY <= notchHeight){
-			dummyMouseX = notch(0) - 1
+			ttt = notch(0) + notchWidth - dummyMouseX
+			dummyMouseX = notch(0) - ttt
 		}
 	}
 
@@ -435,13 +439,13 @@ lastTime=timeGetTime()
 	}
 
 	if(cursorMode == 0 || cursorMode == 3 || cursorMode == 5){
-		cursorSize = 10,16
+		cursorSize = 0.25*temp2,0.4*temp3
 		cursorBuffer = 2
 	} else: if(cursorMode == 1){
 		cursorSize = 20,32
 		cursorBuffer = 3
 	} else: if(cursorMode == 2){
-		cursorSize = 20,32
+		cursorSize = 0.5*temp2,0.8*temp3
 		cursorBuffer = 4
 	}
 
