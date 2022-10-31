@@ -4,7 +4,7 @@
 #include "user32.as"
 #include "hspmath.as"
 
-participant = 12001
+participant = 1
 displaySize = 24.5
 
 temp = sqrt(16*16+9*9)
