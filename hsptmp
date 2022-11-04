@@ -4,7 +4,7 @@
 #include "user32.as"
 #include "hspmath.as"
 
-participant = 12
+participant = 13
 displaySize = 24.5
 
 temp = sqrt(16*16+9*9)
@@ -17,7 +17,7 @@ temp3 = (ginfo(21) / display(1))
 
 
 dim cursorModes,3
-cursorModes = 2,5,0
+cursorModes = 0,2,5
 
 cursorMode = cursorModes(0)
 
@@ -75,7 +75,7 @@ dim Is,3
 Is = 0.0,1.2*temp2,10000.0
 
 dim Ss,2
-Ss = 1,0
+Ss = 0,1
 
 dim Ds,1
 Ds = 0
