@@ -4,7 +4,7 @@
 #include "user32.as"
 #include "hspmath.as"
 
-participant = 9
+participant = 12
 displaySize = 24.5
 
 temp = sqrt(16*16+9*9)
@@ -75,7 +75,7 @@ dim Is,3
 Is = 0.0,1.2*temp2,10000.0
 
 dim Ss,2
-Ss = 0,1
+Ss = 1,0
 
 dim Ds,1
 Ds = 0
